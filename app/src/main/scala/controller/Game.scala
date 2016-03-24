@@ -4,15 +4,15 @@ import javafx.fxml.FXML
 import javafx.scene.control.{Label, TextArea}
 import javafx.scene.layout.Pane
 
-import control.ConsoleFx
 import model.World
+import org.mtrupkin.control.ConsoleFx
 import org.mtrupkin.math.Point
 import org.mtrupkin.math.Vect
 
 import scalafx.Includes._
 import scalafx.scene.input.KeyCode
 import scalafx.scene.input.KeyCode._
-import scalafx.scene.{control => sfxc, input => sfxi, layout => sfxl, shape => sfxs, text => sfxt}
+import scalafx.scene.{input => sfxi, layout => sfxl}
 
 /**
  * Created by mtrupkin on 12/15/2014.
@@ -48,10 +48,8 @@ trait Game { self: Controller =>
       console.draw(world)
     }
 
-    def handleMouseMove(event: sfxi.MouseEvent): Unit = {
-      for (p <- mouseToPoint(event)) {
-        console.cursor = Some(p)
-      }
+    def handleMouseMove(mouseEvent: sfxi.MouseEvent): Unit = {
+      console.updateCursor(mouseEvent.x, mouseEvent.y)
     }
 
     def handleMouseClicked(event: sfxi.MouseEvent): Unit = {
@@ -60,7 +58,6 @@ trait Game { self: Controller =>
     def handleMouseExit(event: sfxi.MouseEvent): Unit = {
     }
 
-    def mouseToPoint(mouseEvent: sfxi.MouseEvent): Option[Point] = console.pixelToCell(mouseEvent.x, mouseEvent.y)
 
     def handleKeyPressed(event: sfxi.KeyEvent): Unit = {
       event.consume()
@@ -68,7 +65,7 @@ trait Game { self: Controller =>
       val direction = getDirection(code)
       code match {
         case ESCAPE => exit()
-        case _ => ???
+        case _ =>
       }
     }
 

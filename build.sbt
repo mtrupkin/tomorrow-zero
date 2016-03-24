@@ -1,13 +1,9 @@
 name := """tomorrow-zero"""
 
-version := "1.0"
+lazy val math = project
 
-scalaVersion := "2.11.8"
+lazy val console = project.in(file("console-lib")).dependsOn(math)
 
-resolvers += Resolver.url("me.mtrupkin ivy repo", url("http://dl.bintray.com/mtrupkin/ivy/"))(Resolver.ivyStylePatterns)
+lazy val consoleFx = project.dependsOn(console)
 
-libraryDependencies ++= Seq(
-  "com.typesafe.play" %% "play-json" % "2.4.0-M2",
-  "org.scalafx" %% "scalafx" % "8.0.60-R9",
-  "org.mtrupkin" %% "math-lib" % "1.0"
-)
+lazy val app = project.dependsOn(consoleFx)

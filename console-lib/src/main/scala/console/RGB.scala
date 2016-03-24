@@ -1,4 +1,4 @@
-package console
+package org.mtrupkin.console
 
 case class RGB(r: Int, g: Int, b:Int)
 
