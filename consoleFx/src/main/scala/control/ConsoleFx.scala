@@ -29,11 +29,10 @@ class ConsoleFx(val size: Size = Size(40, 20)) extends Pane {
     val l = new Label()
     l.setTextFill(Color.WHITE)
     l.setFont(font)
-    //l.setStyle("-fx-border-color: blue;")
     labels(p) = l
 
     val (px, py) = cellToPixel(p)
-    l.relocate(px, py)
+    l.relocate(px + 2, py + 2)
     getChildren.add(l)
   })
 
@@ -77,7 +76,7 @@ class ConsoleFx(val size: Size = Size(40, 20)) extends Pane {
 
   private def cellToPixel(p: Point): (Double, Double) = {
     val (width, height) = cellSize
-    val (borderWidth, borderHeight) = (2, 2)
+    val (borderWidth, borderHeight) = (0, 0)
 
     (p.x * width + borderWidth, p.y * height + borderHeight)
   }
@@ -90,6 +89,6 @@ object ConsoleFx {
     val fontWidth = fl.computeStringWidth(" ", f)
     val metrics = fl.getFontMetrics(f)
 
-    (Math.floor(fontWidth + 2), Math.floor(metrics.getLineHeight + 3))
+    (Math.floor(fontWidth + 0), Math.floor(metrics.getLineHeight + 2))
   }
 }
