@@ -11,7 +11,7 @@ class PerlinSpec extends FlatSpec with Matchers {
 
   "Perlin noise" should "generate a value" in {
     val (x, y) = (0.1, 0.5)
-    val noise = Perlin.noise(x, y)
+    val noise = Perlin(-1, 1).noise(x, y)
 
     val beInRange = be > -1.0 and be < 1.0
     noise should beInRange

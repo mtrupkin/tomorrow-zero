@@ -19,17 +19,17 @@ class World extends CellMap {
 object WorldBuilder {
   def apply(): World = {
     val world = new World
-    val perlin = Perlin(1)
+    val perlin = Perlin(-1, 1)
     world.size.foreach(p => {
       world(p) = new Cell {
         def move: Boolean = ???
         val char: ConsoleChar = {
           val width: Double = world.size.width
           val height: Double = world.size.height
-          val x = p.x / width
-          val y = p.y / height
-          val noise = perlin.noise(x, y)
-          val color = (noise * 256).toInt
+          val x = (p.x / width)
+          val y = (p.y / height)
+          val noise = perlin.octave(1, 0.25, x, y)
+          val color = (noise * 256).toInt + 128
           println(s"$x $y $noise $color")
           ConsoleChar(' ', RGB.Black, RGB(color, color, color))
           //ConsoleChar('.')
