@@ -17,7 +17,7 @@ class ConsoleApp extends Application {
 		primaryStage.setTitle("Tomorrow World - Zero")
 
 		object Controller extends Controller {
-			lazy val initialState: ControllerState = new GameController(WorldBuilder())
+			lazy val initialState: ControllerState = new GameController(WorldBuilder(0.25))
 			lazy val stage = primaryStage
 		}
 

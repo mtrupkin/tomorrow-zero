@@ -1,28 +1,33 @@
 package controller
 
 import javafx.fxml.FXML
-import javafx.scene.control.{Label, TextArea}
+import javafx.scene.control.{Label, Slider, TextArea}
 import javafx.scene.layout.Pane
 
-import model.World
+import model.{World, WorldBuilder}
 import org.mtrupkin.control.ConsoleFx
 import org.mtrupkin.math.Point
 import org.mtrupkin.math.Vect
 
 import scalafx.Includes._
+import scalafx.beans.property.DoubleProperty
 import scalafx.scene.input.KeyCode
 import scalafx.scene.input.KeyCode._
-import scalafx.scene.{input => sfxi, layout => sfxl}
+import scalafx.scene.{control => sfxc, input => sfxi, layout => sfxl}
+
 
 /**
  * Created by mtrupkin on 12/15/2014.
  */
 trait Game { self: Controller =>
-  class GameController(world: World) extends ControllerState {
+  class GameController(var world: World) extends ControllerState {
     val name = "Game"
 
     @FXML var consolePane: Pane = _
 
+    @FXML var slider1: Slider = _
+
+    val value1 = DoubleProperty(0)
     val console = new ConsoleFx()
 
     def initialize(): Unit = {
@@ -38,10 +43,20 @@ trait Game { self: Controller =>
         onMouseExited = (e: sfxi.MouseEvent) => handleMouseExit(e)
       }
 
+      new sfxc.Slider(slider1) {
+        value.onChange(updateWorld())
+      }
+
       consolePane.getChildren.clear()
       consolePane.getChildren.add(console)
 
       consolePane.setFocusTraversable(true)
+    }
+
+    protected def updateWorld(): Unit = {
+      val persistence = slider1.getValue
+      println(s"$persistence")
+      world = WorldBuilder.apply(persistence)
     }
 
     override def update(elapsed: Int): Unit = {

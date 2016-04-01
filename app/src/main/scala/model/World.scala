@@ -17,25 +17,32 @@ class World extends CellMap {
 }
 
 object WorldBuilder {
-  def apply(): World = {
+
+  def apply(persistence: Double): World = {
     val world = new World
-    val perlin = Perlin(-1, 1)
+    var sum = 0
+    var count = 0
     world.size.foreach(p => {
       world(p) = new Cell {
         def move: Boolean = ???
         val char: ConsoleChar = {
           val width: Double = world.size.width
           val height: Double = world.size.height
-          val x = (p.x / width)
-          val y = (p.y / height)
-          val noise = perlin.octave(1, 0.25, x, y)
-          val color = (noise * 256).toInt + 128
-          println(s"$x $y $noise $color")
+          val x = (p.x / width) * 1
+          val y = (p.y / height) * 1
+          val perlin = Perlin.fractalSum(x, y)//, f = Math.abs)
+          val noise = ( perlin + 1 ) / 2
+//          val noise = (perlin.noise(x, y) + 1)/2
+          //val color = if (noise > 0.25) (noise * 256).toInt  else 0
+          val color = (noise * 255).toInt
+          sum += color
+          count += 1
+//          println(s"$x $y $noise $color")
           ConsoleChar(' ', RGB.Black, RGB(color, color, color))
-          //ConsoleChar('.')
         }
       }
     })
+    println(s"avg: ${sum/count}")
     world
   }
 }
